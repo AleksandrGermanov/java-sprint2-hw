@@ -1,3 +1,5 @@
+// С наступающим Новым Годом!!!
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
