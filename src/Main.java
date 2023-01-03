@@ -1,79 +1,34 @@
-// С наступающим Новым Годом!!!
-
-import java.util.ArrayList;
+import ShapkinsEdition.*;
+import StandartEdition.*;
 import java.util.Scanner;
 
+// С наступившим Новым Годом!!!
 public class Main {
     public static void main(String[] args) {
-        ReportReader reportReader = new ReportReader();
-        Scanner scanner = new Scanner(System.in);
-        ArrayList<MonthlyECounter> mecs = new ArrayList<>();
-        YearlyECounter yec = null;
-        YearlyECounter yecFromMecs;
 
+        Scanner scanner = new Scanner(System.in);
+        String input;
         while (true) {
-            printMenu();
-            String input = scanner.nextLine();
-            if (input.equals("1")) {
-                reportReader.setIsMonthly(true);
-                reportReader.getReportFiles();
-                mecs = reportReader.filesToMECArrayList();
-            } else if (input.equals("2")) {
-                reportReader.setIsMonthly(false);
-                reportReader.getReportFiles();
-                yec = reportReader.filesToYec();
-            } else if (input.equals("3")) {
-                if (MonthlyECounter.getWasCreated() && YearlyECounter.getWasCreated()) {
-                    yecFromMecs = MonthlyECounter.yecFromMecs(mecs);
-                    YearlyECounter.CompareYecs(yec, yecFromMecs);
-                } else {
-                    if (!MonthlyECounter.getWasCreated())
-                        System.out.println("Нужно считать месячные отчеты");
-                    if (!YearlyECounter.getWasCreated())
-                        System.out.println("Нужно считать годовой отчет");
-                }
-            } else if (input.equals("4")) {
-                if (!MonthlyECounter.getWasCreated())
-                    System.out.println("Нужно считать месячные отчеты");
-                else {
-                    System.out.println("Информация из месячных отчетов " + mecs.get(0).getYearInt() + " года.");
-                    MonthlyECounter.printMonthlyStats(mecs);
-                }
-            } else if (input.equals("5")) {
-                if (!YearlyECounter.getWasCreated())
-                    System.out.println("Нужно считать годовой отчет");
-                else {
-                    System.out.println("Информация из отчета за " + yec.getYearInt() + " год.");
-                    yec.printProfit();
-                    yec.printAvgProfitAndExpense();
-                }
-            } else if (input.equals("182 с половиной зерна в год")) {
-                break;
+            System.out.println("Здравствуйте!");
+            System.out.println("Если вы хотите считать как Александр, " +
+                    "введите \"Standart\".");
+            System.out.println("Если вы хотите считать как Вячеслав, " +
+                    "введите \"Shapkin\".");
+            System.out.println("Если вы не хотите больше считать сегодня, " +
+                    "введите \"exit\".");
+            System.out.println("Ввод осуществляется без кавычек.");
+            input = scanner.nextLine();
+            switch (input) {
+                case "Standart":
+                    StandartExecutor.standartEdition();
+                    break;
+                case "Shapkin":
+                    ShapkinsExecutor.shapkinsEdition();
+                    break;
+                case "exit":
+                    System.exit(0);
             }
         }
-    }
-
-    static void printMenu() {
-        System.out.println("\nЧто вы хотите сделать?");
-        System.out.println("1 - Считать все месячные отчёты");
-        System.out.println("2 - Считать годовой отчёт");
-        if (MonthlyECounter.getWasCreated() && YearlyECounter.getWasCreated()) {
-            System.out.println("3 - Сверить отчёты");
-        } else {
-            System.out.println("3(недоступно) - Сверить отчёты");
-        }
-        if (MonthlyECounter.getWasCreated()) {
-            System.out.println("4 - Вывести информацию о всех месячных отчётах");
-        } else {
-            System.out.println("4(недоступно) - Вывести информацию о всех месячных отчётах");
-        }
-        if (YearlyECounter.getWasCreated()) {
-            System.out.println("5 - Вывести информацию о годовом отчёте");
-        } else {
-            System.out.println("5(недоступно) - Вывести информацию о годовом отчёте");
-        }
-        System.out.println("Для выхода из приложения введите следующую фразу " +
-                "\"182 с половиной зерна в год\"(без кавычек).");
     }
 }
 

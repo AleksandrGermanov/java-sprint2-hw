@@ -1,3 +1,5 @@
+package StandartEdition;
+
 import java.util.ArrayList;
 
 public class YearlyECounter extends ECounter {
@@ -36,7 +38,7 @@ public class YearlyECounter extends ECounter {
     public void printProfit() {
         double buffer;
         for (int i = 1; i < month.size(); i = i + 2) {
-            if (month.get(i) == month.get(i - 1)) {
+            if (month.get(i).equals(month.get(i - 1))) {
                 if (isExpense.get(i - 1)) {
                     buffer = -amount.get(i - 1);
                 } else {
@@ -56,31 +58,17 @@ public class YearlyECounter extends ECounter {
         }
     }
 
-    public static void CompareYecs(YearlyECounter yec, YearlyECounter yecFromMecs) {
+    public static void compareYecs(YearlyECounter yec, YearlyECounter yecFromMecs) {
         boolean isOK = true;
         for (int i = 1; i < yec.month.size(); i = i + 2) {
-            if ((yec.month.get(i - 1) == yec.month.get(i)) &&
-                    (yecFromMecs.month.get(i - 1) == yecFromMecs.month.get(i)) &&
-                    (yec.month.get(i - 1) == yecFromMecs.month.get(i - 1))) {
-                double income;
-                double outcome;
-                double in;
-                double out;
-                if (yec.isExpense.get(i - 1)) {
-                    outcome = yec.amount.get(i - 1);
-                    income = yec.amount.get(i);
-                } else {
-                    outcome = yec.amount.get(i);
-                    income = yec.amount.get(i - 1);
-                }
-                if (yecFromMecs.isExpense.get(i - 1)) {
-                    out = yecFromMecs.amount.get(i - 1);
-                    in = yecFromMecs.amount.get(i);
-                } else {
-                    out = yecFromMecs.amount.get(i);
-                    in = yecFromMecs.amount.get(i - 1);
-                }
-                if (!((outcome == out) && (income == in))) {
+            if ((yec.month.get(i - 1).equals(yec.month.get(i))) &&
+                    (yecFromMecs.month.get(i - 1).equals(yecFromMecs.month.get(i))) &&
+                    (yec.month.get(i - 1).equals(yecFromMecs.month.get(i - 1)))) {
+                double income = yecLinesExpenseProfitDefiner(false, yec, i);
+                double outcome = yecLinesExpenseProfitDefiner(true, yec, i);
+                double in = yecLinesExpenseProfitDefiner(false, yecFromMecs, i);
+                double out = yecLinesExpenseProfitDefiner(true, yecFromMecs, i);
+                if (!(outcome==out && income==in)) {
                     System.out.println("Несоответствие данных за " +
                             monthNames[yec.month.get(i) - 1] + " " + yec.getYearInt() +
                             " года!");
@@ -109,8 +97,26 @@ public class YearlyECounter extends ECounter {
             }
         }
         System.out.println("Средний расход за все месяцы составил " +
-                df.format(expense / (amount.size() / 2)) + " рублей.");
+                df.format(expense / (amount.size() / 2.0)) + " рублей.");
         System.out.println("Средний доход за все месяцы составил " +
-                df.format(profit / (amount.size() / 2)) + " рублей.");
+                df.format(profit / (amount.size() / 2.0)) + " рублей.");
+    }
+
+    static double yecLinesExpenseProfitDefiner(boolean isExpense,
+                                               YearlyECounter yec, int i) {
+        double income;
+        double outcome;
+        if (yec.isExpense.get(i - 1)) {
+            outcome = yec.amount.get(i - 1);
+            income = yec.amount.get(i);
+        } else {
+            outcome = yec.amount.get(i);
+            income = yec.amount.get(i - 1);
+        }
+        if (isExpense) {
+            return outcome;
+        } else {
+            return income;
+        }
     }
 }

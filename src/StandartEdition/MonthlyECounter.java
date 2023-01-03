@@ -1,3 +1,5 @@
+package StandartEdition;
+
 import java.util.ArrayList;
 
 public class MonthlyECounter extends ECounter {
@@ -66,9 +68,6 @@ public class MonthlyECounter extends ECounter {
     public static YearlyECounter yecFromMecs(ArrayList<MonthlyECounter> mecs) {
         mecShuttleSorter(mecs);
         ArrayList<String> reportData = new ArrayList<>();
-        reportData.add("Dummy");// конструктор отбросит первые 3 значения,
-        reportData.add("Dummy");// т.к. в csv файлах это названия колонок
-        reportData.add("Dummy");
         for (int i = 0; i < mecs.size(); i++) {
             MonthlyECounter monthly = mecs.get(i);
             Double income = 0.0;

@@ -1,4 +1,9 @@
-import java.io.*;
+package StandartEdition;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -12,12 +17,8 @@ import java.util.ArrayList;
  */
 public class ReportReader {
     boolean isMonthly;// переключает годовой и месячный режим
-    String classPath = System.getProperty("java.class.path");
-    ;
-    String fs = System.getProperty("file.separator");
-    String resourcesPath = (classPath + fs + ".." + fs +
-            ".." + fs + ".." + fs + "resources");//при сохранной структуре проекта
-    //путь от classPath до resources всегда одинаков
+    String userDir = System.getProperty("user.dir");
+    String resourcesPath = (userDir + "/resources");
     File resources = new File(resourcesPath);
     ArrayList<File> files;
 
@@ -29,39 +30,37 @@ public class ReportReader {
         files = new ArrayList<>();
     }
 
-    String[] getFilteredNames() { //часть метода getReportFiles()
-        String start;
-        if (isMonthly) {
-            start = "m";
-        } else {
-            start = "y";
-        }
+    String[] getFilteredNames(String start) { //часть метода getReportFiles()
         /*
         There is no guarantee that the name strings in the resulting array
         will appear in any specific order; they are not, in particular,
         guaranteed to appear in alphabetical order.
         из описания file.list() - на определенном этапе потребуется сортер
          */
-        String[] names = resources.list(new FilenameFilter() { //тут можно было бы сразу
-            //resources.listFiles(), a потом фильтроваться по file.getName(), но хотелось изучить применение
-            //FilenameFilter
-            @Override
-            public boolean accept(File file, String name) {
-                return name.startsWith(start);
+        String[] names = resources.list((file, name) -> name.startsWith(start));
+        try {
+            if (names.length == 0) {
+                throw new Exception("Пустой строковый массив");
             }
-        });
+            return names;
+        } catch (Exception emptyStringArray) {
+            System.out.println("Ничего не нашлось! Проверьте правильность " +
+                    "значения фильтра и наличие нужных файлов в папке.");
+            emptyStringArray.printStackTrace();
+            System.exit(404);
+        }
         return names;
     }
 
-    void getReportFiles() {
+    void getReportFiles(String start) {
         System.out.println("В папке " + resources.getName() + " найдены следующие отчеты:");
-        String[] filteredNames = getFilteredNames();//отфильтровали имена файлов
+        String[] filteredNames = getFilteredNames(start);//отфильтровали имена файлов
         if (!files.isEmpty()) { //почистили корзинку
             files.clear();
         }
         for (String str : filteredNames) {
             System.out.println(str);
-            File file = new File(resourcesPath + fs + str); //создаем новый file
+            File file = new File(resourcesPath + "/" + str); //создаем новый file
             if (file.exists() && file.isFile()) {//проверяем
                 files.add(file);//и кладем в корзину
             } else {
@@ -97,12 +96,19 @@ public class ReportReader {
             aList.add(str);
         }
         if (isMonthly) {//здесь проверяем, чтобы количество значений было кратно количеству колонок в отчетах
+            //
             if ((aList.size()) % MonthlyECounter.columnQuantity == 0) {
                 System.out.println("Отчет из файла " + files.get(iterator).getName() + " успешно считан.");
+                for (int i = 0; i < MonthlyECounter.columnQuantity; i++) {//здесь удаляем 1 строку с загловками
+                    aList.remove(0);
+                }
             }
         } else {
             if ((aList.size()) % YearlyECounter.columnQuantity == 0) {
                 System.out.println("Отчет из файла " + files.get(iterator).getName() + " успешно считан.");
+                for (int i = 0; i < YearlyECounter.columnQuantity; i++) {
+                    aList.remove(0);
+                }
             }
         }
         return aList;
