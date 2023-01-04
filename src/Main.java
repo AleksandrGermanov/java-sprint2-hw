@@ -2,7 +2,6 @@ import ShapkinsEdition.*;
 import StandartEdition.*;
 import java.util.Scanner;
 
-// С наступившим Новым Годом!!!
 public class Main {
     public static void main(String[] args) {
 

@@ -19,10 +19,8 @@ public class ReportReaderSE {
         if (!files.isEmpty()) {
             files.clear();
         }
-        DirectoryStream<Path> stream = null;
-        try {
-            stream = Files.newDirectoryStream(resources,
-                    file -> (file.getFileName().toString().startsWith(start)));
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(resources,
+                    file -> (file.getFileName().toString().startsWith(start)))){ // теперь и здесь дверь с доводчиком
             System.out.println("Следующие файлы готовы к загрузке:");
             for (Path path : stream) {
                 files.add(path);
@@ -30,8 +28,6 @@ public class ReportReaderSE {
             }
         } catch (DirectoryIteratorException ex) {
             throw ex.getCause(); // IOException как причина
-        } finally {
-            stream.close();
         }
         try {
             if (files.size() == 0) {
