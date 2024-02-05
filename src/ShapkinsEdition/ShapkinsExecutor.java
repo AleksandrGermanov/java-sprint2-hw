@@ -1,12 +1,13 @@
 package ShapkinsEdition;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ShapkinsExecutor {
     public static void shapkinsEdition() {
         ReportReaderSE rrSE = new ReportReaderSE();
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
         ArrayList<MonthlyReportSE> mrs = new ArrayList<>();
         YearlyReportSE yr = null;
         YearlyReportSE autoYr;

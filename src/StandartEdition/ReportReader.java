@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**
@@ -71,13 +72,11 @@ public class ReportReader {
         System.out.println("Готовлюсь к загрузке данных из отчетов.");
     }
 
-    String fileToString(int iterator) {//часть метода fileToArrayList(int iterator)
+    String fileToString(int fileNum) {//часть метода fileToArrayList(int iterator)
         String concat = "";
-        try (BufferedReader reader = new BufferedReader(new FileReader(files.get(iterator)))) { //дверь с доводчиком,
-            //можно и не закрывать)
+        try (BufferedReader reader = new BufferedReader(new FileReader(files.get(fileNum), StandardCharsets.UTF_8))) {
             String str;
-            while ((str = reader.readLine()) != null) {//присаивание значения переменной в условном выражении.
-                //А что, так можно было?
+            while ((str = reader.readLine()) != null) {
                 concat += str + ",";
             }
         } catch (IOException ex) {
@@ -88,9 +87,9 @@ public class ReportReader {
         return concat;
     }
 
-    ArrayList<String> fileToArrayList(int iterator) { //поскольку количество значений может меняться
+    ArrayList<String> fileToArrayList(int fileNum) { //поскольку количество значений может меняться
         // от месяца к месяцу или в годовом отчете, конструкотор ECounter(...,...) принимает список
-        String[] strings = fileToString(iterator).split(",");
+        String[] strings = fileToString(fileNum).split(",");
         ArrayList<String> aList = new ArrayList<>();
         for (String str : strings) {
             aList.add(str);
@@ -98,14 +97,14 @@ public class ReportReader {
         if (isMonthly) {//здесь проверяем, чтобы количество значений было кратно количеству колонок в отчетах
             //
             if ((aList.size()) % MonthlyECounter.columnQuantity == 0) {
-                System.out.println("Отчет из файла " + files.get(iterator).getName() + " успешно считан.");
+                System.out.println("Отчет из файла " + files.get(fileNum).getName() + " успешно считан.");
                 for (int i = 0; i < MonthlyECounter.columnQuantity; i++) {//здесь удаляем 1 строку с загловками
                     aList.remove(0);
                 }
             }
         } else {
             if ((aList.size()) % YearlyECounter.columnQuantity == 0) {
-                System.out.println("Отчет из файла " + files.get(iterator).getName() + " успешно считан.");
+                System.out.println("Отчет из файла " + files.get(fileNum).getName() + " успешно считан.");
                 for (int i = 0; i < YearlyECounter.columnQuantity; i++) {
                     aList.remove(0);
                 }

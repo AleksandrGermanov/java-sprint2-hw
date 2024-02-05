@@ -1,6 +1,7 @@
 package ShapkinsEdition;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,7 +45,7 @@ public class ReportReaderSE {
     HashMap<Integer, List<String>> reportData(int i) throws IOException {
         HashMap<Integer, List<String>> reportMap = new HashMap<>();
         Integer line = 0;
-        for (String str : Files.readAllLines(files.get(i))) {
+        for (String str : Files.readAllLines(files.get(i), StandardCharsets.UTF_8)) {
             String[] strings = str.split(",");
             reportMap.put(line, Arrays.asList(strings));
             ++line;

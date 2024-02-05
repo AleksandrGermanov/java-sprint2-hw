@@ -1,11 +1,13 @@
 import ShapkinsEdition.*;
 import StandartEdition.*;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
         String input;
         while (true) {
             System.out.println("Здравствуйте!");

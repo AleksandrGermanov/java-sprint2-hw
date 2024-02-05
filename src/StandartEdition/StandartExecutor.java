@@ -1,12 +1,13 @@
 package StandartEdition;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class StandartExecutor {
     public static void standartEdition () {
         ReportReader reportReader = new ReportReader();
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
         ArrayList<MonthlyECounter> mecs = new ArrayList<>();
         YearlyECounter yec = null;
         YearlyECounter yecFromMecs;
@@ -47,7 +48,7 @@ public class StandartExecutor {
                     yec.printProfit();
                     yec.printAvgProfitAndExpense();
                 }
-            } else if (input.equals("182 с половиной зерна в год")) {
+            } else if (input.equals("exit")) {
                 break;
             }
         }
@@ -73,7 +74,7 @@ public class StandartExecutor {
             System.out.println("5(недоступно) - Вывести информацию о годовом отчёте");
         }
         System.out.println("Для выхода из приложения введите следующую фразу " +
-                "\"182 с половиной зерна в год\"(без кавычек).");
+                "\"exit\"(без кавычек).");
     }
 }
 
